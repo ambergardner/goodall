@@ -1,4 +1,5 @@
 package com.goodall.controllers;
+
 import com.goodall.entities.User;
 import com.goodall.entities.ViewUser;
 import com.goodall.services.EventRepository;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class GoodallController {
@@ -45,22 +48,37 @@ public class GoodallController {
     public User login(@RequestBody String body, HttpServletResponse response) throws Exception {
         ViewUser viewUser = null;
         JsonParser p = new JsonParser();
+//        Map objectBody = p.parse(body);
+//        System.out.println(objectBody);
         try {
             viewUser = p.parse(body, ViewUser.class);
-        }catch(Exception e){
+        } catch (Exception e) {
             response.sendError(999, "No user by that name.");
         }
 
         User dbuser = users.findFirstByUsername(viewUser.getUsername());
 
-        if(dbuser == null){
-            response.sendError(401,"Would you like to create an account?");
-        }else if(!dbuser.verifyPassword(viewUser.getPassword())){
-            response.sendError(401,"Please enter correct password.");
+        if (dbuser == null) {
+            response.sendError(998, "Would you like to create an account?");
+        } else if (!dbuser.verifyPassword(viewUser.getPassword())) {
+            response.sendError(1234, "Please enter correct password.");
         }
+        response.sendRedirect("/");
         return dbuser;
     }
 
-    @RequestMapping(path = "/add-user", method = RequestMethod.POST)
-    public void
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    public void addUser(@RequestBody ViewUser viewUser, HttpServletResponse response) throws IOException {
+        try {
+            User user = users.findFirstByUsername(viewUser.getUsername());
+            if(user != null){
+                response.sendError(978,"Animals are cool!");
+            }else {
+                users.save(new User(viewUser.getUsername(), viewUser.getPassword()));
+            }
+        } catch (Exception e) {
+            response.sendError(4321, "This username is not available.");
+        }
+        response.sendRedirect("/");
+    }
 }
