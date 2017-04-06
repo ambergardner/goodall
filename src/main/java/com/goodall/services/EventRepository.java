@@ -1,4 +1,7 @@
 package com.goodall.services;
 
-public class EventRepository {
+import com.goodall.entities.Event;
+import org.springframework.data.repository.CrudRepository;
+
+public interface EventRepository extends CrudRepository<Event, Integer>{
 }
