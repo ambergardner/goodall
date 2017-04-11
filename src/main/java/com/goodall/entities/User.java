@@ -27,7 +27,7 @@ public class User implements HasId {
     public User(String username, String email, String password) throws Exception{
         this.username = username;
         this.email = email;
-        setPassword(password);
+        this.password = password;
     }
 
     public User(){}
@@ -52,16 +52,30 @@ public class User implements HasId {
         this.email = email;
     }
 
+
+
     private String getPasswordHash() {
         return password;
     }
 
-    public void setPassword(String password) throws PasswordStorage.CannotPerformOperationException{
-        this.password = PasswordStorage.createHash(password);
+    public String createPasswordHash(String password) throws PasswordStorage.CannotPerformOperationException{
+        return PasswordStorage.createHash(password);
     }
 
     public boolean verifyPassword(String password) throws PasswordStorage.InvalidHashException, PasswordStorage.CannotPerformOperationException {
 
         return PasswordStorage.verifyPassword(password, getPasswordHash());
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
