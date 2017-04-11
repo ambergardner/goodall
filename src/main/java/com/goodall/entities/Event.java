@@ -1,57 +1,72 @@
 package com.goodall.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "events")
-public class Event {
-    @Id
-    @GeneratedValue
-    int id;
+public class Event implements HasId {
+    static final long serialVersionUID = 1L;
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    String id;
+
+    @Column
     String title;
 
-    @Column(nullable = false)
-    int img_id;
+    @Column
+    String imgId;
 
-    @Column(nullable = false)
+    @Column
     String description;
 
-    @Column(nullable = false)
-    String startAndEndTime;
+    @Column
+    String startTime;
 
-    @Column(nullable = false)
-    LocalDateTime dateTime;
+    @Column
+    String duration;
 
-    @Column(nullable = false)
+    @Column
     String location;
 
-    @Column(nullable = false)
+    @Column
     String artist;
+
+    @Column
+    String date;
+
+    @Column
+    String time;
 
     @ManyToOne
     User user;
 
-    public Event(String title, int img_id, String description, String startAndEndTime, LocalDateTime dateTime, String location, String artist) {
-        this.title = title;
-        this.img_id = img_id;
-        this.description = description;
-        this.startAndEndTime = startAndEndTime;
-        this.dateTime = dateTime;
-        this.location = location;
-        this.artist = artist;
+    public Event() {
     }
 
-    public Event(){}
+    public Event(String title, String imgId, String description, String startTime, String duration, String location, String artist, String date, String time, User user) {
+        this.title = title;
+        this.imgId = imgId;
+        this.description = description;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.location = location;
+        this.artist = artist;
+        this.date = date;
+        this.time = time;
+        this.user = user;
+    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -63,12 +78,12 @@ public class Event {
         this.title = title;
     }
 
-    public int getImg_id() {
-        return img_id;
+    public String getImgId() {
+        return imgId;
     }
 
-    public void setImg_id(int img_id) {
-        this.img_id = img_id;
+    public void setImgId(String imgId) {
+        this.imgId = imgId;
     }
 
     public String getDescription() {
@@ -79,20 +94,20 @@ public class Event {
         this.description = description;
     }
 
-    public String getStartAndEndTime() {
-        return startAndEndTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStartAndEndTime(String startAndEndTime) {
-        this.startAndEndTime = startAndEndTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public String getLocation() {
@@ -109,5 +124,29 @@ public class Event {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
