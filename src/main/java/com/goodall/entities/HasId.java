@@ -1,0 +1,7 @@
+package com.goodall.entities;
+
+import java.io.Serializable;
+
+public interface HasId extends Serializable {
+    String getId();
+}
