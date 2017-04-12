@@ -63,6 +63,23 @@ public class UserController {
         );
     }
 
-    // path = "/login"
-// loginUser()
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public Map<String, Object> loginUser(@RequestBody RootParser<User> parser, HttpServletResponse response) throws IOException {
+        User inputUser = parser.getData().getEntity();
+
+        try {
+            User checkUserExists = users.findFirstByUsername(inputUser.getUsername());
+            checkUserExists.verifyPassword(inputUser.getPassword());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            response.sendError(400, "Invalid Login attempt. ");
+        }
+        User dbuser = users.findFirstByUsername(inputUser.getUsername());
+
+        return rootSerializer.serializeOne(
+                "/login" + dbuser.getId(),
+                dbuser,
+                userSerializer
+        );
+    }
 }
