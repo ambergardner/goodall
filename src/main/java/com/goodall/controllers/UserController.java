@@ -8,17 +8,14 @@ import com.goodall.services.UserRepository;
 import com.goodall.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-
+@CrossOrigin("*")
 @RestController
 public class UserController {
     @Autowired
@@ -69,10 +66,12 @@ public class UserController {
 
         try {
             User checkUserExists = users.findFirstByUsername(inputUser.getUsername());
-            checkUserExists.verifyPassword(inputUser.getPassword());
+            if (! checkUserExists.verifyPassword(inputUser.getPassword())){
+                response.sendError(400,"Invalid password.");
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.sendError(400, "Invalid Login attempt. ");
+            response.sendError(400, "Invalid Login");
         }
         User dbuser = users.findFirstByUsername(inputUser.getUsername());
 

@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "events")
 public class Event implements HasId {
-    static final long serialVersionUID = 1L;
+    static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(generator="system-uuid")
@@ -40,16 +40,13 @@ public class Event implements HasId {
     @Column
     String date;
 
-    @Column
-    String time;
-
     @ManyToOne
     User user;
 
     public Event() {
     }
 
-    public Event(String title, String imgId, String description, String startTime, String duration, String location, String artist, String date, String time, User user) {
+    public Event(String title, String imgId, String description, String startTime, String duration, String location, String artist, String date, User user) {
         this.title = title;
         this.imgId = imgId;
         this.description = description;
@@ -58,7 +55,6 @@ public class Event implements HasId {
         this.location = location;
         this.artist = artist;
         this.date = date;
-        this.time = time;
         this.user = user;
     }
 
@@ -136,14 +132,6 @@ public class Event implements HasId {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public void setUser(User user) {
