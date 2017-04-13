@@ -2,11 +2,13 @@ package com.goodall.controllers;
 
 import com.goodall.entities.Event;
 import com.goodall.entities.User;
+import com.goodall.entities.ViewEvent;
 import com.goodall.parsers.RootParser;
 import com.goodall.serializers.EventSerializer;
 import com.goodall.serializers.RootSerializer;
 import com.goodall.serializers.UserSerializer;
 import com.goodall.services.EventRepository;
+import com.goodall.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,24 +20,26 @@ import java.util.Map;
 public class EventController {
     @Autowired
     EventRepository events;
+    @Autowired
+    UserRepository users;
 
     RootSerializer rootSerializer = new RootSerializer();
     EventSerializer eventSerializer = new EventSerializer();
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)
-    public Map<String, Object> createEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
-        Event inputEvent = parser.getData().getEntity();
-//        User user = inputEvent.getUser();
-////        inputEvent.setUser(parser.getData().getRelationshipId("user"));
+    public Map<String, Object> createEvent(@RequestBody RootParser<ViewEvent> parser, HttpServletResponse response) throws IOException {
+        ViewEvent inputEvent = parser.getData().getEntity();
+        User user = users.findFirstById(inputEvent.getUser());
+        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getDuration(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
         try {
-            events.save(inputEvent);
+            events.save(event);
         } catch (Exception e) {
-            response.sendError(400, "Please login.");
+            response.sendError(400, "Unable to save event.");
         }
 
         return rootSerializer.serializeOne(
-                "/events" + inputEvent.getId(),
-                inputEvent,
+                "/events" + event.getId(),
+                event,
                 eventSerializer
                 );
     }
