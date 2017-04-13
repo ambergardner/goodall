@@ -43,4 +43,14 @@ public class EventController {
                 eventSerializer
                 );
     }
+
+    @RequestMapping(path = "/events/{id}", method = RequestMethod.DELETE)
+    public void deleteEvent(@PathVariable String id, HttpServletResponse response) throws IOException {
+        try {
+            events.delete(id);
+        }catch(Exception e){
+            response.sendError(404, "Event not found");
+        }
+        response.setStatus(204);
+    }
 }
