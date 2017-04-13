@@ -26,25 +26,26 @@ public class EventController {
     RootSerializer rootSerializer = new RootSerializer();
     EventSerializer eventSerializer = new EventSerializer();
 
-//    @RequestMapping(path = "/")
-//    public Map<String, Object> displayEvent(){
-//
-//    }
-
+    @RequestMapping(path = "/events", method = RequestMethod.GET)
+    public Map<String, Object> displayEvents(){
+        Iterable<Event> showEvents = events.findAll();
+        return rootSerializer.serializeMany("/events", showEvents, eventSerializer);
+    }
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)
-    public Map<String, Object> createEvent(@RequestBody RootParser<ViewEvent> parser, HttpServletResponse response) throws IOException {
-        ViewEvent inputEvent = parser.getData().getEntity();
-        User user = users.findFirstById(inputEvent.getUser());
-        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getDuration(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
+    public Map<String, Object> createEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
+        Event event = parser.getData().getEntity();
+//        User user = users.findFirstById(inputEvent.getUser());
+//        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getDuration(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
         try {
             events.save(event);
+            response.setStatus(201, "Saved successfully.");
         } catch (Exception e) {
             response.sendError(400, "Unable to save event.");
         }
 
         return rootSerializer.serializeOne(
-                "/events" + event.getId(),
+                "/events",
                 event,
                 eventSerializer
                 );
