@@ -1,23 +1,18 @@
 package com.goodall.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import javax.swing.text.View;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ViewEvent {
 
     String title;
-
+    @JsonProperty("img-id")
     String imgId;
 
     String description;
-
+    @JsonProperty("start-time")
     String startTime;
-
-    String duration;
+    @JsonProperty("end-time")
+    String endTime;
 
     String location;
 
@@ -25,17 +20,17 @@ public class ViewEvent {
 
     String date;
 
-    String user;
+    String user;//reference to the user
 
     public ViewEvent() {
     }
 
-    public ViewEvent(String title, String imgId, String description, String startTime, String duration, String location, String artist, String date, String user) {
+    public ViewEvent(String title, String imgId, String description, String startTime, String endTime, String location, String artist, String date, String user) {
         this.title = title;
         this.imgId = imgId;
         this.description = description;
         this.startTime = startTime;
-        this.duration = duration;
+        this.endTime = endTime;
         this.location = location;
         this.artist = artist;
         this.date = date;
@@ -74,12 +69,12 @@ public class ViewEvent {
         this.startTime = startTime;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getLocation() {

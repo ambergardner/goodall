@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.View;
 import java.io.IOException;
 import java.util.Map;
 @CrossOrigin("*")
@@ -33,10 +34,10 @@ public class EventController {
     }
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)
-    public Map<String, Object> createEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
-        Event event = parser.getData().getEntity();
-//        User user = users.findFirstById(inputEvent.getUser());
-//        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getDuration(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
+    public Map<String, Object> createEvent(@RequestBody RootParser<ViewEvent> parser, HttpServletResponse response) throws IOException {
+        ViewEvent inputEvent = parser.getData().getEntity();
+        User user = users.findFirstById(inputEvent.getUser());
+        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getEndTime(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
         try {
             events.save(event);
         } catch (Exception e) {
