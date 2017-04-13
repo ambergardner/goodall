@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.View;
 import java.io.IOException;
 import java.util.Map;
+
 @CrossOrigin("*")
 @RestController
 public class EventController {
@@ -28,9 +29,18 @@ public class EventController {
     EventSerializer eventSerializer = new EventSerializer();
 
     @RequestMapping(path = "/events", method = RequestMethod.GET)
-    public Map<String, Object> displayEvents(){
+    public Map<String, Object> displayEvents() {
         Iterable<Event> showEvents = events.findAll();
         return rootSerializer.serializeMany("/events", showEvents, eventSerializer);
+    }
+
+    @RequestMapping(path = "/events/{id}", method = RequestMethod.GET)
+    public Map<String, Object> viewEvent(@PathVariable String id, @RequestBody RootParser<Event> parser, HttpServletResponse response) {
+        Event event = events.findFirstById(id);
+        return rootSerializer.serializeOne(
+                "/events",
+                event,
+                eventSerializer);
     }
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)
@@ -48,14 +58,14 @@ public class EventController {
                 "/events",
                 event,
                 eventSerializer
-                );
+        );
     }
 
     @RequestMapping(path = "/events/{id}", method = RequestMethod.DELETE)
     public void deleteEvent(@PathVariable String id, HttpServletResponse response) throws IOException {
         try {
             events.delete(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             response.sendError(404, "Event not found");
         }
         response.setStatus(204);
