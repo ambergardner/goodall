@@ -1,5 +1,6 @@
 package com.goodall.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -20,16 +21,19 @@ public class Event implements HasId {
     String title;
 
     @Column
+    @JsonProperty("img-id")
     String imgId;
 
     @Column
     String description;
 
     @Column
+    @JsonProperty("start-time")
     String startTime;
 
     @Column
-    String duration;
+    @JsonProperty("end-time")
+    String endTime;
 
     @Column
     String location;
@@ -51,7 +55,7 @@ public class Event implements HasId {
         this.imgId = imgId;
         this.description = description;
         this.startTime = startTime;
-        this.duration = duration;
+        this.endTime = endTime;
         this.location = location;
         this.artist = artist;
         this.date = date;
@@ -99,11 +103,11 @@ public class Event implements HasId {
     }
 
     public String getDuration() {
-        return duration;
+        return endTime;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setDuration(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getLocation() {

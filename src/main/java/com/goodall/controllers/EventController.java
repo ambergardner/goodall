@@ -26,6 +26,12 @@ public class EventController {
     RootSerializer rootSerializer = new RootSerializer();
     EventSerializer eventSerializer = new EventSerializer();
 
+//    @RequestMapping(path = "/")
+//    public Map<String, Object> displayEvent(){
+//
+//    }
+
+
     @RequestMapping(path = "/events", method = RequestMethod.POST)
     public Map<String, Object> createEvent(@RequestBody RootParser<ViewEvent> parser, HttpServletResponse response) throws IOException {
         ViewEvent inputEvent = parser.getData().getEntity();
