@@ -26,7 +26,7 @@ public class EventController {
     RootSerializer rootSerializer = new RootSerializer();
     EventSerializer eventSerializer = new EventSerializer();
 
-    @RequestMapping(path = "/events", method = RequestMethod.GET)
+    @RequestMapping(path = "/", method = RequestMethod.GET)
     public Map<String, Object> displayEvents(){
         Iterable<Event> showEvents = events.findAll();
         return rootSerializer.serializeMany("/events", showEvents, eventSerializer);
@@ -39,7 +39,6 @@ public class EventController {
 //        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getDuration(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
         try {
             events.save(event);
-            response.setStatus(201, "Saved successfully.");
         } catch (Exception e) {
             response.sendError(400, "Unable to save event.");
         }
