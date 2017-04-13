@@ -26,7 +26,7 @@ public class EventController {
     RootSerializer rootSerializer = new RootSerializer();
     EventSerializer eventSerializer = new EventSerializer();
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
+    @RequestMapping(path = "/events", method = RequestMethod.GET)
     public Map<String, Object> displayEvents(){
         Iterable<Event> showEvents = events.findAll();
         return rootSerializer.serializeMany("/events", showEvents, eventSerializer);
