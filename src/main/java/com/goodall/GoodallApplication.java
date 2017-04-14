@@ -20,7 +20,7 @@ public class GoodallApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("*");
+						.allowedOrigins("*");//specific location of the domain
 			}
 		};
 	}

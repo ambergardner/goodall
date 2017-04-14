@@ -2,15 +2,23 @@ package com.goodall.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Lob;
+
 public class ViewEvent {
 
     String title;
+
     @JsonProperty("img-id")
     String imgId;
 
+//    @Lob
+//    private byte[] eventImg;
+
     String description;
+
     @JsonProperty("start-time")
     String startTime;
+
     @JsonProperty("end-time")
     String endTime;
 
@@ -20,7 +28,7 @@ public class ViewEvent {
 
     String date;
 
-    String user;//reference to the user
+    String user;//reference to the user id
 
     public ViewEvent() {
     }

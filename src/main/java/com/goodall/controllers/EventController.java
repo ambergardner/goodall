@@ -10,6 +10,8 @@ import com.goodall.serializers.UserSerializer;
 import com.goodall.services.EventRepository;
 import com.goodall.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,13 +30,13 @@ public class EventController {
     RootSerializer rootSerializer = new RootSerializer();
     EventSerializer eventSerializer = new EventSerializer();
 
-    @RequestMapping(path = "/events", method = RequestMethod.GET)
+    @RequestMapping(path = "/events", method = RequestMethod.GET)//public
     public Map<String, Object> displayEvents() {
         Iterable<Event> showEvents = events.findAll();
         return rootSerializer.serializeMany("/events", showEvents, eventSerializer);
     }
 
-    @RequestMapping(path = "/events/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/events/{id}", method = RequestMethod.GET)//public
     public Map<String, Object> viewEvent(@PathVariable String id, @RequestBody RootParser<Event> parser, HttpServletResponse response) {
         Event event = events.findFirstById(id);
         return rootSerializer.serializeOne(
@@ -43,17 +45,20 @@ public class EventController {
                 eventSerializer);
     }
 
-    @RequestMapping(path = "/events", method = RequestMethod.POST)
-    public Map<String, Object> createEvent(@RequestBody RootParser<ViewEvent> parser, HttpServletResponse response) throws IOException {
-        ViewEvent inputEvent = parser.getData().getEntity();
-        User user = users.findFirstById(inputEvent.getUser());
-        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(), inputEvent.getStartTime(), inputEvent.getEndTime(), inputEvent.getLocation(), inputEvent.getArtist(), inputEvent.getDate(), user);
+    @RequestMapping(path = "/events", method = RequestMethod.POST)//private
+    public Map<String, Object> createEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
+        Authentication u = SecurityContextHolder.getContext().getAuthentication();
+        Event event = parser.getData().getEntity();
+        User user = users.findFirstByUsername(u.getName());
+        event.setUser(user);
+//        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(),
+//                inputEvent.getStartTime(), inputEvent.getEndTime(), inputEvent.getLocation(),
+//                inputEvent.getArtist(), inputEvent.getDate(), user);
         try {
             events.save(event);
         } catch (Exception e) {
             response.sendError(400, "Unable to save event.");
         }
-
         return rootSerializer.serializeOne(
                 "/events",
                 event,
@@ -61,10 +66,11 @@ public class EventController {
         );
     }
 
-    @RequestMapping(path = "/events/{id}", method = RequestMethod.DELETE)
-    public void deleteEvent(@PathVariable String id, HttpServletResponse response) throws IOException {
+    @RequestMapping(path = "/events/{id}", method = RequestMethod.DELETE)//private
+    public void deleteEvent(HttpServletResponse response) throws IOException {
+        Authentication u = SecurityContextHolder.getContext().getAuthentication();
         try {
-            events.delete(id);
+            events.delete(u.getName());
         } catch (Exception e) {
             response.sendError(404, "Event not found");
         }

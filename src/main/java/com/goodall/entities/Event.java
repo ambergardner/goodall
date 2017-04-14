@@ -25,6 +25,10 @@ public class Event implements HasId {
     String imgId;
 
     @Column
+    @Lob
+    byte[] eventImg;
+
+    @Column
     String description;
 
     @Column
