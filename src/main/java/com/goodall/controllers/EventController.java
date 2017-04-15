@@ -51,9 +51,6 @@ public class EventController {
         Event event = parser.getData().getEntity();
         User user = users.findFirstByUsername(u.getName());
         event.setUser(user);
-//        Event event = new Event(inputEvent.getTitle(), inputEvent.getImgId(), inputEvent.getDescription(),
-//                inputEvent.getStartTime(), inputEvent.getEndTime(), inputEvent.getLocation(),
-//                inputEvent.getArtist(), inputEvent.getDate(), user);
         try {
             events.save(event);
         } catch (Exception e) {
@@ -76,4 +73,27 @@ public class EventController {
         }
         response.setStatus(204);
     }
+
+    @RequestMapping(path = "/events/{id}", method = RequestMethod.PATCH)
+    public Map<String, Object> updateEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
+        Authentication u = SecurityContextHolder.getContext().getAuthentication();
+        Event event = parser.getData().getEntity();
+        User user = users.findFirstByUsername(u.getName());
+        event.setUser(user);
+        try {
+            events.save(event);
+        } catch (Exception e) {
+            response.sendError(400, "Unable to update event.");
+        }
+        return rootSerializer.serializeOne(
+                "/events",
+                event,
+                eventSerializer
+        );
+    }
+
+//    @RequestMapping(path = "/events/location", method = RequestMethod.GET)
+//    public Map<String, Object> findEventsByLoc(){
+//
+//    }
 }
