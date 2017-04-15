@@ -15,7 +15,7 @@ public class User implements HasId {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column
@@ -51,8 +51,6 @@ public class User implements HasId {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
     private String getPasswordHash() {
         return password;

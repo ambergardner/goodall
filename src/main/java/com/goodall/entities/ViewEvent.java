@@ -1,60 +1,39 @@
 package com.goodall.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import javax.persistence.Lob;
 
-@Entity
-@Table(name = "events")
-public class Event implements HasId {
-    static final long serialVersionUID = 1L;
+public class ViewEvent {
 
-    @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    String id;
-
-    @Column
     String title;
 
-    @Column
     @JsonProperty("img-id")
     String imgId;
 
-    @Column
-    @Lob
-    byte[] eventImg;
+//    @Lob
+//    private byte[] eventImg;
 
-    @Column
     String description;
 
-    @Column
     @JsonProperty("start-time")
     String startTime;
 
-    @Column
     @JsonProperty("end-time")
     String endTime;
 
-    @Column
     String location;
 
-    @Column
     String artist;
 
-    @Column
     String date;
 
-    @ManyToOne
-    User user;
+    String user;//reference to the user id
 
-    public Event() {
+    public ViewEvent() {
     }
 
-    public Event(String title, String imgId, String description, String startTime, String endTime, String location, String artist, String date, User user) {
+    public ViewEvent(String title, String imgId, String description, String startTime, String endTime, String location, String artist, String date, String user) {
         this.title = title;
         this.imgId = imgId;
         this.description = description;
@@ -64,14 +43,6 @@ public class Event implements HasId {
         this.artist = artist;
         this.date = date;
         this.user = user;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -130,10 +101,6 @@ public class Event implements HasId {
         this.artist = artist;
     }
 
-    public User getUser() {
-        return user;
-    }
-
     public String getDate() {
         return date;
     }
@@ -142,7 +109,11 @@ public class Event implements HasId {
         this.date = date;
     }
 
-    public void setUser(User user) {
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
         this.user = user;
     }
 }
