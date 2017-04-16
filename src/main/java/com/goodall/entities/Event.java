@@ -49,6 +49,9 @@ public class Event implements HasId {
     @JsonProperty("end-time")
     String endTime;
 
+    @Column
+    String coordinates;
+
     @ManyToOne
     User user;
 
@@ -164,5 +167,13 @@ public class Event implements HasId {
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
     }
 }

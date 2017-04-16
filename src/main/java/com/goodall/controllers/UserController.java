@@ -32,12 +32,12 @@ public class UserController {
 
     @PostConstruct
     public void init() throws SQLException, PasswordStorage.CannotPerformOperationException {
-        if (users.count() == 0) {
-            User user = new User();
-            user.setUsername("Nat");
-            user.setPassword("But");
-            users.save(user);
-        }
+//        if (users.count() == 0) {
+//            User user = new User();
+//            user.setUsername("Nat");
+//            user.setPassword("But");
+//            users.save(user);
+//        }
     }
 
     @RequestMapping(path = "/users", method = RequestMethod.POST)
