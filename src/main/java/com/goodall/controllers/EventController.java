@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.View;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -36,11 +37,17 @@ public class EventController {
         return rootSerializer.serializeMany("/events", showEvents, eventSerializer);
     }
 
+    @RequestMapping(path = "/events/searchzip/{zip}", method = RequestMethod.GET)//public
+    public Map<String, Object> filterEventsByZipcode(@PathVariable String zip) {
+        ArrayList<Event> filteredEvents = events.findAllByZip(zip);
+        return rootSerializer.serializeMany("/events", filteredEvents, eventSerializer);
+    }
+
     @RequestMapping(path = "/events/{id}", method = RequestMethod.GET)//public
-    public Map<String, Object> viewEvent(@PathVariable String id, @RequestBody RootParser<Event> parser, HttpServletResponse response) {
+    public Map<String, Object> viewEvent(@PathVariable String id, HttpServletResponse response) {
         Event event = events.findFirstById(id);
         return rootSerializer.serializeOne(
-                "/events",
+                "/events/{id}",
                 event,
                 eventSerializer);
     }
