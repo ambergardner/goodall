@@ -41,6 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Allow view all events without login
                 .antMatchers(HttpMethod.GET, "/events")
                 .permitAll()
+                // Allow view single events without login
+                .antMatchers(HttpMethod.GET, "/events/{id}")
+                .permitAll()
                 // All other requests must be authenticated
                 .anyRequest()
                 .authenticated().and()

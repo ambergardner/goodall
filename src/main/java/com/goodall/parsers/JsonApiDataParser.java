@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 public class JsonApiDataParser<T> {
     String type;
     String id;

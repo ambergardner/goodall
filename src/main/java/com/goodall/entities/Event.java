@@ -18,15 +18,25 @@ public class Event implements HasId {
     String id;
 
     @Column
+    String address;
+
+    @Column
+    String city;
+
+    @Column
+    String state;
+
+    @Column
+    String zip;
+
+    @Column
     String title;
 
     @Column
-    @JsonProperty("img-id")
-    String imgId;
+    String artist;
 
     @Column
-    @Lob
-    byte[] eventImg;
+    String date;
 
     @Column
     String description;
@@ -39,30 +49,24 @@ public class Event implements HasId {
     @JsonProperty("end-time")
     String endTime;
 
-    @Column
-    String location;
-
-    @Column
-    String artist;
-
-    @Column
-    String date;
-
     @ManyToOne
     User user;
 
     public Event() {
     }
 
-    public Event(String title, String imgId, String description, String startTime, String endTime, String location, String artist, String date, User user) {
+    public Event(String address, String city, String state, String zip, String title, String artist,
+                 String date, String description, String startTime, String endTime, User user) {
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
         this.title = title;
-        this.imgId = imgId;
+        this.artist = artist;
+        this.date = date;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.location = location;
-        this.artist = artist;
-        this.date = date;
         this.user = user;
     }
 
@@ -80,14 +84,6 @@ public class Event implements HasId {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getImgId() {
-        return imgId;
-    }
-
-    public void setImgId(String imgId) {
-        this.imgId = imgId;
     }
 
     public String getDescription() {
@@ -114,14 +110,6 @@ public class Event implements HasId {
         this.endTime = endTime;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getArtist() {
         return artist;
     }
@@ -144,5 +132,37 @@ public class Event implements HasId {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 }
