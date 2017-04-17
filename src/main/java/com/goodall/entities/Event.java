@@ -1,5 +1,6 @@
 package com.goodall.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -17,22 +18,19 @@ public class Event implements HasId {
     String id;
 
     @Column
+    String address;
+
+    @Column
+    String city;
+
+    @Column
+    String state;
+
+    @Column
+    String zip;
+
+    @Column
     String title;
-
-    @Column
-    String imgId;
-
-    @Column
-    String description;
-
-    @Column
-    String startTime;
-
-    @Column
-    String duration;
-
-    @Column
-    String location;
 
     @Column
     String artist;
@@ -41,7 +39,18 @@ public class Event implements HasId {
     String date;
 
     @Column
-    String time;
+    String description;
+
+    @Column
+    @JsonProperty("start-time")
+    String startTime;
+
+    @Column
+    @JsonProperty("end-time")
+    String endTime;
+
+    @Column
+    String coordinates;
 
     @ManyToOne
     User user;
@@ -49,16 +58,18 @@ public class Event implements HasId {
     public Event() {
     }
 
-    public Event(String title, String imgId, String description, String startTime, String duration, String location, String artist, String date, String time, User user) {
+    public Event(String address, String city, String state, String zip, String title, String artist,
+                 String date, String description, String startTime, String endTime, User user) {
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
         this.title = title;
-        this.imgId = imgId;
-        this.description = description;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.location = location;
         this.artist = artist;
         this.date = date;
-        this.time = time;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.user = user;
     }
 
@@ -78,14 +89,6 @@ public class Event implements HasId {
         this.title = title;
     }
 
-    public String getImgId() {
-        return imgId;
-    }
-
-    public void setImgId(String imgId) {
-        this.imgId = imgId;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -102,20 +105,12 @@ public class Event implements HasId {
         this.startTime = startTime;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getArtist() {
@@ -138,15 +133,47 @@ public class Event implements HasId {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
     }
 }

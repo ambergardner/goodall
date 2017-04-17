@@ -8,33 +8,36 @@ import com.goodall.services.UserRepository;
 import com.goodall.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-
+@CrossOrigin("*")
 @RestController
 public class UserController {
     @Autowired
     UserRepository users;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     RootSerializer rootSerializer = new RootSerializer();
     UserSerializer userSerializer = new UserSerializer();
 
     @PostConstruct
     public void init() throws SQLException, PasswordStorage.CannotPerformOperationException {
-        if (users.count() == 0) {
-            User user = new User();
-            user.setUsername("Nat");
-            user.setPassword("But");
-            users.save(user);
-        }
+//        if (users.count() == 0) {
+//            User user = new User();
+//            user.setUsername("Nat");
+//            user.setPassword("But");
+//            users.save(user);
+//        }
     }
 
     @RequestMapping(path = "/users", method = RequestMethod.POST)
@@ -47,7 +50,7 @@ public class UserController {
             if (checkUsersExists != null || user == null) {
                 response.sendError(400, "Please login or register a new account.");
             } else {
-                String hashedPassword = user.createPasswordHash(user.getPassword());
+                String hashedPassword = bCryptPasswordEncoder.encode(user.getPassword());
                 regUser = new User(user.getUsername(), user.getEmail(), hashedPassword);
                 dbuser = users.save(regUser);
             }
@@ -57,12 +60,38 @@ public class UserController {
         }
 
         return rootSerializer.serializeOne(
-                "/users" + dbuser.getId(),
+                "/users/" + dbuser.getId(),
                 dbuser,
                 userSerializer
         );
     }
 
-    // path = "/login"
-// loginUser()
+    @RequestMapping(path = "/users/current", method = RequestMethod.GET)
+    public Map<String, Object> currentUser(){
+        Authentication u = SecurityContextHolder.getContext().getAuthentication();
+        User user = users.findFirstByUsername(u.getName());
+        return rootSerializer.serializeOne("/users/" + user.getId(), user, userSerializer);
+    }
+
+//    @RequestMapping(path = "/login", method = RequestMethod.POST)
+//    public Map<String, Object> loginUser(@RequestBody RootParser<User> parser, HttpServletResponse response) throws IOException {
+//        User inputUser = parser.getData().getEntity();
+//
+//        try {
+//            User checkUserExists = users.findFirstByUsername(inputUser.getUsername());
+//            if (! checkUserExists.verifyPassword(inputUser.getPassword())){
+//                response.sendError(400,"Invalid password.");
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            response.sendError(400, "Invalid Login");
+//        }
+//        User dbuser = users.findFirstByUsername(inputUser.getUsername());
+//
+//        return rootSerializer.serializeOne(
+//                "/login" + dbuser.getId(),
+//                dbuser,
+//                userSerializer
+//        );
+//    }
 }
