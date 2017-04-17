@@ -98,9 +98,4 @@ public class EventController {
                 eventSerializer
         );
     }
-
-//    @RequestMapping(path = "/events/location", method = RequestMethod.GET)
-//    public Map<String, Object> findEventsByLoc(){
-//
-//    }
 }
