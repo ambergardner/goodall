@@ -29,7 +29,7 @@ public class EventSerializer extends JsonDataSerializer {
         result.put("date", event.getDate());
         result.put("coordinates", event.getCoordinates());
         result.put("bg-url", event.getBgUrl());
-        result.put("user", event.getUser());
+        result.put("created-by", event.getUser());
 
         return result;
     }

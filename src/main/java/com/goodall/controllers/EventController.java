@@ -85,19 +85,36 @@ public class EventController {
     }
 
     @RequestMapping(path = "/events/{id}", method = RequestMethod.PATCH)
-    public Map<String, Object> updateEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
+    public Map<String, Object> updateEvent(@PathVariable String id, @RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
         Authentication u = SecurityContextHolder.getContext().getAuthentication();
-        Event event = parser.getData().getEntity();
         User user = users.findFirstByUsername(u.getName());
-        event.setUser(user);
+
+        Event updatedEvent = parser.getData().getEntity();
+        Event dbevent = events.findFirstById(id);
+
+        if (dbevent.getUser().getId() == user.getId()) {
+            dbevent.updateTitle(updatedEvent.getTitle());
+            dbevent.updateAddress(updatedEvent.getAddress());
+            dbevent.updateCity(updatedEvent.getCity());
+            dbevent.updateState(updatedEvent.getState());
+            dbevent.updateZip(updatedEvent.getZip());
+            dbevent.updateArtist(updatedEvent.getArtist());
+            dbevent.updateDate(updatedEvent.getDate());
+            dbevent.updateDescription(updatedEvent.getDescription());
+            dbevent.updateStartTime(updatedEvent.getStartTime());
+            dbevent.updateEndTime(updatedEvent.getEndTime());
+            dbevent.updateBgUrl(updatedEvent.getBgUrl());
+            dbevent.updateCoordinates(updatedEvent.getCoordinates());
+        }
+
         try {
-            events.save(event);
+            events.save(dbevent);
         } catch (Exception e) {
             response.sendError(400, "Unable to update event.");
         }
         return rootSerializer.serializeOne(
-                "/events",
-                event,
+                "/events/" + dbevent.getId(),
+                dbevent,
                 eventSerializer
         );
     }

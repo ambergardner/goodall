@@ -72,4 +72,7 @@ public class UserController {
         User user = users.findFirstByUsername(u.getName());
         return rootSerializer.serializeOne("/users/" + user.getId(), user, userSerializer);
     }
+
+    @RequestMapping(path = "/users", method = RequestMethod.DELETE)
+    public void deleteCurrentUser(){}
 }

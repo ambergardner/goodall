@@ -93,12 +93,24 @@ public class Event implements HasId {
         this.title = title;
     }
 
+    public void updateTitle(String title){
+        if(title != null && !title.isEmpty()){
+            this.title = title;
+        }
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void updateDescription(String description){
+        if(description != null && !description.isEmpty()){
+            this.description = description;
+        }
     }
 
     public String getStartTime() {
@@ -109,6 +121,12 @@ public class Event implements HasId {
         this.startTime = startTime;
     }
 
+    public void updateStartTime(String startTime){
+        if(startTime != null && !startTime.isEmpty()){
+            this.startTime = startTime;
+        }
+    }
+
     public String getEndTime() {
         return endTime;
     }
@@ -117,12 +135,24 @@ public class Event implements HasId {
         this.endTime = endTime;
     }
 
+    public void updateEndTime(String endTime){
+        if(endTime != null && !endTime.isEmpty()){
+            this.endTime = endTime;
+        }
+    }
+
     public String getArtist() {
         return artist;
     }
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public void updateArtist(String artist){
+        if(artist != null && !artist.isEmpty()){
+            this.artist = artist;
+        }
     }
 
     public User getUser() {
@@ -137,8 +167,20 @@ public class Event implements HasId {
         this.date = date;
     }
 
+    public void updateDate(String date){
+        if(date != null && !date.isEmpty()){
+            this.date = date;
+        }
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void updateUser(User user){
+        if(user != null && user.toString().isEmpty()){
+            this.user = user;
+        }
     }
 
     public String getAddress() {
@@ -149,12 +191,24 @@ public class Event implements HasId {
         this.address = address;
     }
 
+    public void updateAddress(String address){
+        if(address != null && !address.isEmpty()){
+            this.address = address;
+        }
+    }
+
     public String getCity() {
         return city;
     }
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void updateCity(String city){
+        if(city != null && !city.isEmpty()){
+            this.city = city;
+        }
     }
 
     public String getState() {
@@ -165,12 +219,24 @@ public class Event implements HasId {
         this.state = state;
     }
 
+    public void updateState(String state){
+        if(state != null && !state.isEmpty()){
+            this.state = state;
+        }
+    }
+
     public String getZip() {
         return zip;
     }
 
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public void updateZip(String zip){
+        if(zip != null && !zip.isEmpty()){
+            this.zip = zip;
+        }
     }
 
     public String getCoordinates() {
@@ -181,11 +247,23 @@ public class Event implements HasId {
         this.coordinates = coordinates;
     }
 
+    public void updateCoordinates(String coordinates) {
+        if(coordinates != null && !coordinates.isEmpty() ) {
+            this.coordinates = coordinates;
+        }
+    }
+
     public String getBgUrl() {
         return bgUrl;
     }
 
     public void setBgUrl(String bgUrl) {
         this.bgUrl = bgUrl;
+    }
+
+    public void updateBgUrl(String bgUrl) {
+        if(bgUrl != null && !bgUrl.isEmpty() ) {
+            this.bgUrl = bgUrl;
+        }
     }
 }
