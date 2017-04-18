@@ -1,5 +1,7 @@
 package com.goodall.controllers;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.goodall.entities.Event;
 import com.goodall.entities.User;
 import com.goodall.entities.ViewEvent;
@@ -10,9 +12,13 @@ import com.goodall.serializers.UserSerializer;
 import com.goodall.services.EventRepository;
 import com.goodall.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.amazonaws.services.s3.AmazonS3Client;
+
 
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.View;
@@ -23,6 +29,12 @@ import java.util.Map;
 @CrossOrigin("*")
 @RestController
 public class EventController {
+    @Value("${cloud.aws.s3.bucket}")
+    String bucket;
+
+    @Autowired
+    AmazonS3Client s3;
+
     @Autowired
     EventRepository events;
     @Autowired
@@ -53,11 +65,40 @@ public class EventController {
     }
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)//private
-    public Map<String, Object> createEvent(@RequestBody RootParser<Event> parser, HttpServletResponse response) throws IOException {
+    public Map<String, Object> createEvent(@RequestParam("file") MultipartFile file,
+                                           @RequestParam("address") String address,
+                                           @RequestParam ("city")String city,
+                                           @RequestParam ("state")String state,
+                                           @RequestParam ("zip")String zip,
+                                           @RequestParam ("title")String title,
+                                           @RequestParam ("artist")String artist,
+                                           @RequestParam ("date")String date,
+                                           @RequestParam ("description")String description,
+                                           @RequestParam ("start-time")String startTime,
+                                           @RequestParam ("end-time")String endTime,
+                                           HttpServletResponse response) throws IOException {
         Authentication u = SecurityContextHolder.getContext().getAuthentication();
-        Event event = parser.getData().getEntity();
         User user = users.findFirstByUsername(u.getName());
-        event.setUser(user);
+
+        // create event
+        Event event = new Event(address, city, state, zip, title, artist, date,
+                description, startTime, endTime, user, "");  // Add all parms, + default image url
+
+        if (file != null) {
+            //set the photourl field
+            event.setPhotoUrl("https://s3.amazonaws.com/" + bucket + "/" + file.getOriginalFilename());
+
+            // set up s3 request
+            PutObjectRequest s3Req = new PutObjectRequest(
+                    bucket,
+                    file.getOriginalFilename(),
+                    file.getInputStream(),
+                    new ObjectMetadata());
+
+
+            // save object to s3
+            s3.putObject(s3Req);
+        }
         try {
             events.save(event);
         } catch (Exception e) {

@@ -24,6 +24,8 @@ public class User implements HasId {
     @Column
     private String password;
 
+
+
     public User(String username, String email, String password) throws Exception{
         this.username = username;
         this.email = email;
