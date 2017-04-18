@@ -53,8 +53,8 @@ public class Event implements HasId {
     String coordinates;
 
     @Column
-    @JsonProperty("photo-url")
-    String photoUrl;
+    @JsonProperty("bg-url")
+    String bgUrl;
 
     @ManyToOne
     User user;
@@ -181,11 +181,11 @@ public class Event implements HasId {
         this.coordinates = coordinates;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getBgUrl() {
+        return bgUrl;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setBgUrl(String bgUrl) {
+        this.bgUrl = bgUrl;
     }
 }

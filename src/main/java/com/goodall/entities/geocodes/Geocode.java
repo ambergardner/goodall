@@ -24,6 +24,4 @@ public class Geocode {
         public String getLng() {
             return results.get(0).geometry.getLocation().getLng();
         }
-
-
 }
