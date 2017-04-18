@@ -2,7 +2,6 @@ package com.goodall.controllers;
 
 import com.goodall.entities.Event;
 import com.goodall.entities.User;
-import com.goodall.entities.ViewEvent;
 import com.goodall.parsers.RootParser;
 import com.goodall.serializers.EventSerializer;
 import com.goodall.serializers.RootSerializer;
@@ -58,7 +57,10 @@ public class EventController {
         Event event = parser.getData().getEntity();
         User user = users.findFirstByUsername(u.getName());
         event.setUser(user);
+        String address = event.getAddress();
+        GeoApiCtl findLoc = new GeoApiCtl();
         try {
+            event.setCoordinates(findLoc.makeGeocodeRequest(address));
             events.save(event);
         } catch (Exception e) {
             response.sendError(400, "Unable to save event.");
@@ -98,4 +100,5 @@ public class EventController {
                 eventSerializer
         );
     }
+
 }

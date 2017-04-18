@@ -18,9 +18,9 @@ public class EventSerializer extends JsonDataSerializer {
 
         result.put("id", event.getId());
         result.put("title", event.getTitle());
-        result.put("address", event.getTitle());
-        result.put("city", event.getTitle());
-        result.put("state", event.getTitle());
+        result.put("address", event.getAddress());
+        result.put("city", event.getCity());
+        result.put("state", event.getState());
         result.put("zip", event.getZip());
         result.put("description", event.getDescription());
         result.put("start-time", event.getStartTime());
@@ -28,6 +28,7 @@ public class EventSerializer extends JsonDataSerializer {
         result.put("artist", event.getArtist());
         result.put("date", event.getDate());
         result.put("coordinates", event.getCoordinates());
+        result.put("photo-url", event.getPhotoUrl());
         result.put("user", event.getUser());
 
         return result;

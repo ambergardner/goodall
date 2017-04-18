@@ -13,8 +13,8 @@ public class Event implements HasId {
     static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     String id;
 
     @Column
@@ -51,6 +51,10 @@ public class Event implements HasId {
 
     @Column
     String coordinates;
+
+    @Column
+    @JsonProperty("photo-url")
+    String photoUrl;
 
     @ManyToOne
     User user;
@@ -175,5 +179,13 @@ public class Event implements HasId {
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

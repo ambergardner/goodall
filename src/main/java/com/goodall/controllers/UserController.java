@@ -72,26 +72,4 @@ public class UserController {
         User user = users.findFirstByUsername(u.getName());
         return rootSerializer.serializeOne("/users/" + user.getId(), user, userSerializer);
     }
-
-//    @RequestMapping(path = "/login", method = RequestMethod.POST)
-//    public Map<String, Object> loginUser(@RequestBody RootParser<User> parser, HttpServletResponse response) throws IOException {
-//        User inputUser = parser.getData().getEntity();
-//
-//        try {
-//            User checkUserExists = users.findFirstByUsername(inputUser.getUsername());
-//            if (! checkUserExists.verifyPassword(inputUser.getPassword())){
-//                response.sendError(400,"Invalid password.");
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            response.sendError(400, "Invalid Login");
-//        }
-//        User dbuser = users.findFirstByUsername(inputUser.getUsername());
-//
-//        return rootSerializer.serializeOne(
-//                "/login" + dbuser.getId(),
-//                dbuser,
-//                userSerializer
-//        );
-//    }
 }
