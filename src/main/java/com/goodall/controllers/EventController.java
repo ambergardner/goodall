@@ -2,11 +2,9 @@ package com.goodall.controllers;
 
 import com.goodall.entities.Event;
 import com.goodall.entities.User;
-import com.goodall.entities.ViewEvent;
 import com.goodall.parsers.RootParser;
 import com.goodall.serializers.EventSerializer;
 import com.goodall.serializers.RootSerializer;
-import com.goodall.serializers.UserSerializer;
 import com.goodall.services.EventRepository;
 import com.goodall.services.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.View;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -58,7 +55,13 @@ public class EventController {
         Event event = parser.getData().getEntity();
         User user = users.findFirstByUsername(u.getName());
         event.setUser(user);
+        String address = event.getAddress();
+        ApiCtl findLoc = new ApiCtl();
+        String coordinates = findLoc.makeGeocodeRequest(address);
+
         try {
+            event.setCoordinates(coordinates);
+            event.setBgUrl(findLoc.getNasaImageUrl(coordinates));
             events.save(event);
         } catch (Exception e) {
             response.sendError(400, "Unable to save event.");
@@ -98,4 +101,5 @@ public class EventController {
                 eventSerializer
         );
     }
+
 }
