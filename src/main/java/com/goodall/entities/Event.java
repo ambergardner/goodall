@@ -59,11 +59,23 @@ public class Event implements HasId {
     @ManyToOne
     User user;
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    @Column
+    @JsonProperty("photo-url")
+    String photoUrl;
+
     public Event() {
     }
 
     public Event(String address, String city, String state, String zip, String title, String artist,
-                 String date, String description, String startTime, String endTime, User user) {
+                 String date, String description, String startTime, String endTime, User user, String photoUrl) {
         this.address = address;
         this.city = city;
         this.state = state;
@@ -75,6 +87,7 @@ public class Event implements HasId {
         this.startTime = startTime;
         this.endTime = endTime;
         this.user = user;
+        this.photoUrl = photoUrl;
     }
 
     public String getId() {

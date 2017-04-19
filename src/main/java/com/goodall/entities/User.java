@@ -1,6 +1,5 @@
 package com.goodall.entities;
 
-import com.goodall.utilities.PasswordStorage;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +22,8 @@ public class User implements HasId {
 
     @Column
     private String password;
+
+
 
     public User(String username, String email, String password) throws Exception{
         this.username = username;
@@ -52,18 +53,8 @@ public class User implements HasId {
         this.email = email;
     }
 
-    private String getPasswordHash() {
-        return password;
-    }
 
-    public String createPasswordHash(String password) throws PasswordStorage.CannotPerformOperationException{
-        return PasswordStorage.createHash(password);
-    }
 
-    public boolean verifyPassword(String password) throws PasswordStorage.InvalidHashException, PasswordStorage.CannotPerformOperationException {
-
-        return PasswordStorage.verifyPassword(password, getPasswordHash());
-    }
 
     public void setId(String id) {
         this.id = id;

@@ -5,7 +5,6 @@ import com.goodall.parsers.RootParser;
 import com.goodall.serializers.RootSerializer;
 import com.goodall.serializers.UserSerializer;
 import com.goodall.services.UserRepository;
-import com.goodall.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -31,17 +30,11 @@ public class UserController {
     UserSerializer userSerializer = new UserSerializer();
 
     @PostConstruct
-    public void init() throws SQLException, PasswordStorage.CannotPerformOperationException {
-//        if (users.count() == 0) {
-//            User user = new User();
-//            user.setUsername("Nat");
-//            user.setPassword("But");
-//            users.save(user);
-//        }
+    public void init() throws SQLException{
     }
 
     @RequestMapping(path = "/users", method = RequestMethod.POST)
-    public Map<String, Object> registerUser(@RequestBody RootParser<User> parser, HttpServletResponse response) throws IOException, PasswordStorage.CannotPerformOperationException {
+    public Map<String, Object> registerUser(@RequestBody RootParser<User> parser, HttpServletResponse response) throws IOException{
         User user = parser.getData().getEntity();
         User regUser = new User();
         User dbuser = new User();

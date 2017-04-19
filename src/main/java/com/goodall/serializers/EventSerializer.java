@@ -2,6 +2,7 @@ package com.goodall.serializers;
 
 import com.goodall.entities.HasId;
 import com.goodall.entities.Event;
+import com.goodall.entities.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +30,10 @@ public class EventSerializer extends JsonDataSerializer {
         result.put("date", event.getDate());
         result.put("coordinates", event.getCoordinates());
         result.put("bg-url", event.getBgUrl());
-        result.put("created-by", event.getUser());
-
+        User user = event.getUser();
+        user.setPassword("REDACTED");
+        result.put("created-by", user);
+        result.put("photo-url", event.getPhotoUrl());
         return result;
     }
 
