@@ -115,10 +115,9 @@ public class EventController {
     }
 
     @RequestMapping(path = "/events/{id}", method = RequestMethod.DELETE)//private
-    public void deleteEvent(HttpServletResponse response) throws IOException {
-        Authentication u = SecurityContextHolder.getContext().getAuthentication();
+    public void deleteEvent(@PathVariable String id, HttpServletResponse response) throws IOException {
         try {
-            events.delete(u.getName());
+            events.delete(id);
         } catch (Exception e) {
             response.sendError(404, "Event not found");
         }
