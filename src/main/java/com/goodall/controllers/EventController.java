@@ -61,7 +61,7 @@ public class EventController {
                 eventSerializer);
     }
 
-    @RequestMapping(path = "/events", method = RequestMethod.POST)
+    @RequestMapping(path = "/events/upload", method = RequestMethod.POST)
     public Map<String, Object> createEvent(@RequestParam("file") MultipartFile file,
                                            @RequestParam("address") String address,
                                            @RequestParam ("city")String city,
@@ -108,7 +108,7 @@ public class EventController {
             response.sendError(400, "Unable to save event.");
         }
         return rootSerializer.serializeOne(
-                "/events",
+                "/events/upload",
                 event,
                 eventSerializer
         );
